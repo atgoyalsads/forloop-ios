@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LearnerCategoryTableViewCell" rowHeight="152" id="KGk-i7-Jjw" customClass="LearnerCategoryTableViewCell" customModule="Forloop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="431" height="152"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="431" height="152"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xjL-tv-T8R">
+                        <rect key="frame" x="10" y="5" width="411" height="142"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0E6-6x-9Pa">
+                                <rect key="frame" x="10" y="14" width="85" height="114"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QE6-Vo-zMr">
+                                <rect key="frame" x="115" y="61" width="276" height="20"/>
+                                <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="0E6-6x-9Pa" firstAttribute="centerY" secondItem="xjL-tv-T8R" secondAttribute="centerY" id="Bod-Co-2l8"/>
+                            <constraint firstItem="0E6-6x-9Pa" firstAttribute="width" secondItem="xjL-tv-T8R" secondAttribute="height" multiplier="6/10" id="KB3-tP-qJZ"/>
+                            <constraint firstAttribute="trailing" secondItem="QE6-Vo-zMr" secondAttribute="trailing" constant="20" id="Kt7-fh-W6t"/>
+                            <constraint firstItem="0E6-6x-9Pa" firstAttribute="height" secondItem="xjL-tv-T8R" secondAttribute="height" multiplier="8/10" id="PqL-Id-dn3"/>
+                            <constraint firstItem="0E6-6x-9Pa" firstAttribute="leading" secondItem="xjL-tv-T8R" secondAttribute="leading" constant="10" id="Rmx-41-f9l"/>
+                            <constraint firstItem="QE6-Vo-zMr" firstAttribute="leading" secondItem="0E6-6x-9Pa" secondAttribute="trailing" constant="20" id="omf-Bu-WB4"/>
+                            <constraint firstItem="QE6-Vo-zMr" firstAttribute="centerY" secondItem="xjL-tv-T8R" secondAttribute="centerY" id="qM4-0l-tbk"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="xjL-tv-T8R" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="6qf-Hx-wJz"/>
+                    <constraint firstItem="xjL-tv-T8R" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="BSM-1G-T4S"/>
+                    <constraint firstAttribute="bottom" secondItem="xjL-tv-T8R" secondAttribute="bottom" constant="5" id="mDT-6W-GYC"/>
+                    <constraint firstAttribute="trailing" secondItem="xjL-tv-T8R" secondAttribute="trailing" constant="10" id="o2H-68-spo"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="categoryLabel" destination="QE6-Vo-zMr" id="6iL-WZ-JYj"/>
+                <outlet property="categoryimage" destination="0E6-6x-9Pa" id="RRU-rY-Kwm"/>
+            </connections>
+            <point key="canvasLocation" x="218.11594202898553" y="158.70535714285714"/>
+        </tableViewCell>
+    </objects>
+</document>

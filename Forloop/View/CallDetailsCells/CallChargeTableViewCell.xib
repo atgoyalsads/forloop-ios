@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="51" id="KGk-i7-Jjw" customClass="CallChargeTableViewCell" customModule="Forloop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="324" height="51"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="324" height="51"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Oj-ND-yd9">
+                        <rect key="frame" x="0.0" y="0.0" width="324" height="2"/>
+                        <color key="backgroundColor" red="0.83921568629999999" green="0.84313725490000002" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="2" id="0Ms-Mb-wNO"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Call Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k9G-S6-bTC">
+                        <rect key="frame" x="20" y="16.5" width="89" height="18"/>
+                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AWS Lambda" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9q3-xE-YIh">
+                        <rect key="frame" x="196" y="14.5" width="108" height="22"/>
+                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XEw-NY-JGt">
+                        <rect key="frame" x="188" y="18" width="7" height="15"/>
+                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="9q3-xE-YIh" firstAttribute="leading" secondItem="XEw-NY-JGt" secondAttribute="trailing" constant="1" id="6Td-Zb-WKm"/>
+                    <constraint firstItem="0Oj-ND-yd9" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="814-ce-r7m"/>
+                    <constraint firstItem="9q3-xE-YIh" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="8Op-y6-glO"/>
+                    <constraint firstItem="XEw-NY-JGt" firstAttribute="centerY" secondItem="9q3-xE-YIh" secondAttribute="centerY" id="GMf-a8-5jd"/>
+                    <constraint firstItem="k9G-S6-bTC" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Ide-m7-VyN"/>
+                    <constraint firstItem="k9G-S6-bTC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="Rxi-V4-Z6z"/>
+                    <constraint firstAttribute="trailing" secondItem="9q3-xE-YIh" secondAttribute="trailing" constant="20" id="gmW-Tn-Pw1"/>
+                    <constraint firstAttribute="trailing" secondItem="0Oj-ND-yd9" secondAttribute="trailing" id="iGh-HZ-wVH"/>
+                    <constraint firstItem="0Oj-ND-yd9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="x9I-1s-kpf"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="borderView" destination="0Oj-ND-yd9" id="ReC-yN-cOe"/>
+                <outlet property="chargeLabel" destination="9q3-xE-YIh" id="tM3-Lf-qVk"/>
+                <outlet property="chargeNameLabel" destination="k9G-S6-bTC" id="wpZ-HZ-KDu"/>
+                <outlet property="dollarLabel" destination="XEw-NY-JGt" id="iYw-Fe-20B"/>
+            </connections>
+            <point key="canvasLocation" x="139.13043478260872" y="90.066964285714278"/>
+        </tableViewCell>
+    </objects>
+</document>

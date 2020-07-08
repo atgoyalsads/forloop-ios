@@ -1,0 +1,110 @@
+{
+  "code": 200,
+  "result": {
+    "categories": [
+      {
+        "title": "Server",
+        "id": "5e0b4a0228e5ad0009ab7fd4"
+      },
+      {
+        "title": "Programming",
+        "id": "5e0b4a0228e5ad0009ab7fd9"
+      }
+    ],
+    "subcategories": [
+      {
+        "title": "aws",
+        "users": [
+          {
+            "description": "Hi there",
+            "displayName": "Ash",
+            "image": null,
+            "pricePerHour": null,
+            "id": "5e0f172615a3b00009e1e975",
+            "skills": [
+              "aws",
+              "NodeJs"
+            ]
+          },
+          {
+            "description": "Hi There",
+            "displayName": "Ash1",
+            "image": null,
+            "pricePerHour": null,
+            "id": "5e0f276fd95af400080ae101",
+            "skills": [
+              "aws"
+            ]
+          },
+          {
+            "description": "Test",
+            "displayName": "test",
+            "image": null,
+            "pricePerHour": null,
+            "id": "5e0f277059d816000914ee09",
+            "skills": [
+              "aws",
+              "atlassian.net",
+              "digital Ocian",
+              "heroku"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "atlassian.net",
+        "users": [
+          {
+            "description": "Test",
+            "displayName": "test",
+            "image": null,
+            "pricePerHour": null,
+            "id": "5e0f277059d816000914ee09",
+            "skills": [
+              "aws",
+              "atlassian.net",
+              "digital Ocian",
+              "heroku"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "digital Ocian",
+        "users": [
+          {
+            "description": "Test",
+            "displayName": "test",
+            "image": null,
+            "pricePerHour": null,
+            "id": "5e0f277059d816000914ee09",
+            "skills": [
+              "aws",
+              "atlassian.net",
+              "digital Ocian",
+              "heroku"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "heroku",
+        "users": [
+          {
+            "description": "Test",
+            "displayName": "test",
+            "image": null,
+            "pricePerHour": null,
+            "id": "5e0f277059d816000914ee09",
+            "skills": [
+              "aws",
+              "atlassian.net",
+              "digital Ocian",
+              "heroku"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

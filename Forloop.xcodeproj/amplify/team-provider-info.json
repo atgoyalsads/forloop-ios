@@ -1,0 +1,20 @@
+{
+    "ios": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-forloop-ios-184015-authRole",
+            "UnauthRoleArn": "arn:aws:iam::269510741414:role/amplify-forloop-ios-184015-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::269510741414:role/amplify-forloop-ios-184015-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-forloop-ios-184015-deployment",
+            "UnauthRoleName": "amplify-forloop-ios-184015-unauthRole",
+            "StackName": "amplify-forloop-ios-184015",
+            "StackId": "arn:aws:cloudformation:us-west-2:269510741414:stack/amplify-forloop-ios-184015/b2841310-474f-11ea-99cd-069318d3f048",
+            "AmplifyAppId": "d2f7akb79n13g5"
+        },
+        "categories": {
+            "auth": {
+                "googlauth": {}
+            }
+        }
+    }
+}

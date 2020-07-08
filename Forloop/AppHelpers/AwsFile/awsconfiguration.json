@@ -1,0 +1,49 @@
+{
+  "UserAgent": "aws-amplify/cli",
+  "Version": "0.1.0",
+  "IdentityManager": {
+    "Default": {
+      
+    }
+  },
+  "CredentialsProvider": {
+    "CognitoIdentity": {
+      "Default": {
+        "PoolId": "us-west-2_7BKdwAKgn",
+        "Region": "us-west-2"
+      }
+    }
+  },
+  "CognitoUserPool": {
+    "Default": {
+      "PoolId": "us-west-2_7BKdwAKgn",
+      "AppClientId": "22khvcumhs7a1pkve1tn9k5a41",
+      "AppClientSecret": "453rk73kh0na13g7pq1erp3srh2e3s0vd19av5csmls4sb4ljk2",
+      "Region": "us-west-2"
+    }
+  },
+  "GoogleSignIn": {
+      "ClientId-iOS": "448064435503-jrb7qj8gu4lils79c622ckde101c6i72.apps.googleusercontent.com",
+      "Permissions": "profile,email,openid"
+  },
+  "FacebookSignIn": {
+    "AppId": "519181925378459",
+    "Permissions": "public_profile,email"
+  },
+  "Auth": {
+    "Default": {
+      "OAuth": {
+        "WebDomain": "forloopapplication.auth.us-west-2.amazoncognito.com",
+        "AppClientId": "22khvcumhs7a1pkve1tn9k5a41",
+        "AppClientSecret": "453rk73kh0na13g7pq1erp3srh2e3s0vd19av5csmls4sb4ljk2",
+        "SignInRedirectURI": "myapp://example",
+        "SignOutRedirectURI": "myapp://example",
+        "Scopes": [
+          "openid",
+          "email"
+        ]
+      }
+    }
+  }
+}
+

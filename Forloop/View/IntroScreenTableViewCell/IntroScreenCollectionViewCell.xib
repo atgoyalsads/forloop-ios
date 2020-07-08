@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="IntroScreenCollectionViewCell" id="gTV-IL-0wX" customClass="IntroScreenCollectionViewCell" customModule="Forloop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="541" height="1024"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="541" height="1024"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tpx-Wk-sOr">
+                        <rect key="frame" x="0.0" y="0.0" width="541" height="1024"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="intro_first" translatesAutoresizingMaskIntoConstraints="NO" id="ANP-Wk-ysO">
+                                <rect key="frame" x="67.5" y="179.5" width="406" height="406"/>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ED8-p5-grA">
+                                <rect key="frame" x="10" y="809" width="521" height="20"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DRIVE AND ENJOY" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gff-QU-Qag">
+                                        <rect key="frame" x="189.5" y="0.0" width="142.5" height="20"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="17"/>
+                                        <color key="textColor" red="0.44705882349999998" green="0.44705882349999998" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ANP-Wk-ysO" firstAttribute="centerX" secondItem="Tpx-Wk-sOr" secondAttribute="centerX" id="1pl-ao-WuM"/>
+                            <constraint firstItem="ED8-p5-grA" firstAttribute="leading" secondItem="CDz-fE-sP3" secondAttribute="leading" constant="10" id="8bS-iS-3f2"/>
+                            <constraint firstItem="ANP-Wk-ysO" firstAttribute="centerY" secondItem="Tpx-Wk-sOr" secondAttribute="centerY" multiplier="850/1138" id="9Z3-Mw-GIO"/>
+                            <constraint firstItem="ANP-Wk-ysO" firstAttribute="width" secondItem="Tpx-Wk-sOr" secondAttribute="width" multiplier="3/4" id="Lfv-6R-1NK"/>
+                            <constraint firstItem="CDz-fE-sP3" firstAttribute="trailing" secondItem="ED8-p5-grA" secondAttribute="trailing" constant="10" id="NiX-sL-WAV"/>
+                            <constraint firstItem="ED8-p5-grA" firstAttribute="centerY" secondItem="Tpx-Wk-sOr" secondAttribute="bottom" multiplier="8/10" id="QZ9-15-QSj"/>
+                            <constraint firstItem="ANP-Wk-ysO" firstAttribute="height" secondItem="Tpx-Wk-sOr" secondAttribute="width" multiplier="3/4" id="kye-EH-PsT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="CDz-fE-sP3"/>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Tpx-Wk-sOr" secondAttribute="bottom" id="M1W-1v-hqZ"/>
+                <constraint firstItem="Tpx-Wk-sOr" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="NvF-p3-OOU"/>
+                <constraint firstAttribute="trailing" secondItem="Tpx-Wk-sOr" secondAttribute="trailing" id="hX1-hT-Z5P"/>
+                <constraint firstItem="Tpx-Wk-sOr" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="n9z-vY-SBH"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="541" height="556"/>
+            <connections>
+                <outlet property="descLabel" destination="gff-QU-Qag" id="A2X-a7-ZUh"/>
+                <outlet property="introImage" destination="ANP-Wk-ysO" id="f9D-dV-sbm"/>
+            </connections>
+            <point key="canvasLocation" x="397.60000000000002" y="326.53673163418296"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="intro_first" width="283" height="275.5"/>
+    </resources>
+</document>

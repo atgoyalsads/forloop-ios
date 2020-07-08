@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Bold.ttf">
+            <string>Roboto-Bold</string>
+        </array>
+        <array key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LoginHeaderCell" rowHeight="93" id="KGk-i7-Jjw" customClass="LoginHeaderCell" customModule="Forloop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="372" height="93"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="372" height="93"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eso-4R-hru">
+                        <rect key="frame" x="0.0" y="0.0" width="372" height="93"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="6Mq-hk-gUL">
+                                <rect key="frame" x="20" y="10" width="332" height="73"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log In" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSv-b5-Xzf">
+                                        <rect key="frame" x="0.0" y="0.0" width="83.5" height="35.5"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="30"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your email address  and password to get access your account" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s1U-Cv-DMj">
+                                        <rect key="frame" x="0.0" y="35.5" width="332" height="37.5"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                                        <color key="textColor" red="0.44705882349999998" green="0.44705882349999998" blue="0.44705882349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="6Mq-hk-gUL" firstAttribute="leading" secondItem="eso-4R-hru" secondAttribute="leading" constant="20" id="OKS-Yy-PP3"/>
+                            <constraint firstAttribute="trailing" secondItem="6Mq-hk-gUL" secondAttribute="trailing" constant="20" id="UOQ-HB-LTE"/>
+                            <constraint firstAttribute="bottom" secondItem="6Mq-hk-gUL" secondAttribute="bottom" constant="10" id="dWZ-wg-7qQ"/>
+                            <constraint firstItem="6Mq-hk-gUL" firstAttribute="top" secondItem="eso-4R-hru" secondAttribute="top" constant="10" id="uBC-7o-OrW"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="eso-4R-hru" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="GFs-iR-Mcs"/>
+                    <constraint firstItem="eso-4R-hru" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="LVB-9v-gYa"/>
+                    <constraint firstAttribute="trailing" secondItem="eso-4R-hru" secondAttribute="trailing" id="Nh6-bx-sO1"/>
+                    <constraint firstAttribute="bottom" secondItem="eso-4R-hru" secondAttribute="bottom" id="t5h-V4-8aS"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="titleDescription" destination="s1U-Cv-DMj" id="hsL-MZ-dcd"/>
+                <outlet property="titleLabel" destination="wSv-b5-Xzf" id="uLm-MT-FZE"/>
+            </connections>
+            <point key="canvasLocation" x="183" y="49"/>
+        </tableViewCell>
+    </objects>
+</document>

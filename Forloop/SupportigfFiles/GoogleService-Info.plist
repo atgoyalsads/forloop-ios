@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>412359744553-5shkr04t1s6nnshssh8820ul9vu02141.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.412359744553-5shkr04t1s6nnshssh8820ul9vu02141</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCPgGAqhaoo1JMGzxjoEWjxxBsHkbhtQOg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>412359744553</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.Tecorb.Forloop</string>
+	<key>PROJECT_ID</key>
+	<string>forloop-91c36</string>
+	<key>STORAGE_BUCKET</key>
+	<string>forloop-91c36.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:412359744553:ios:30c69760546da8f001d038</string>
+	<key>DATABASE_URL</key>
+	<string>https://forloop-91c36.firebaseio.com</string>
+</dict>
+</plist>
