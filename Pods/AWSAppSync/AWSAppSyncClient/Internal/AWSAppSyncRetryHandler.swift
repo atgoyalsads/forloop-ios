@@ -5,9 +5,10 @@
 //
 
 import Foundation
+import AppSyncRealTimeClient
 
 /// Encapsulates advice about whether a request should be retried, and if so, after how much time
-struct AWSAppSyncRetryAdvice {
+struct AWSAppSyncRetryAdvice: RetryAdvice {
     let shouldRetry: Bool
     let retryInterval: DispatchTimeInterval?
 }
@@ -24,6 +25,8 @@ final class AWSAppSyncRetryHandler: ConnectionRetryHandler {
     // We will rather cap it to 30.
     static let maxRetryAttemptsWhenUsingAggresiveMode = 30
     
+    static let maxExponentWhenCalculatingExponentialBackoff = 31
+
     private static let jitterMilliseconds: Float = 100.0
 
     private var currentAttemptNumber = 0
@@ -34,7 +37,7 @@ final class AWSAppSyncRetryHandler: ConnectionRetryHandler {
         self.retryStrategy = retryStrategy
     }
 
-    func shouldRetryRequest(for error: ConnectionProviderError) -> AWSAppSyncRetryAdvice {
+    func shouldRetryRequest(for error: ConnectionProviderError) -> RetryAdvice {
         currentAttemptNumber += 1
         switch error {
         case .connection, .limitExceeded:
@@ -116,7 +119,11 @@ final class AWSAppSyncRetryHandler: ConnectionRetryHandler {
             let delay = Int(Double(1000.0 + Double(AWSAppSyncRetryHandler.getRandomBetween0And1() * AWSAppSyncRetryHandler.jitterMilliseconds)))
             return delay
         case .exponential:
-            let delay = Int(Double(truncating: pow(2.0, attemptNumber) as NSNumber) * 100.0 + Double(AWSAppSyncRetryHandler.getRandomBetween0And1() * AWSAppSyncRetryHandler.jitterMilliseconds))
+            var exponent = attemptNumber
+            if attemptNumber > maxExponentWhenCalculatingExponentialBackoff {
+                exponent = maxExponentWhenCalculatingExponentialBackoff
+            }
+            let delay = Int(Double(truncating: pow(2.0, exponent) as NSNumber) * 100.0 + Double(AWSAppSyncRetryHandler.getRandomBetween0And1() * AWSAppSyncRetryHandler.jitterMilliseconds))
             return delay
         }
     }

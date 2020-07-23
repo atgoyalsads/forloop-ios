@@ -19,7 +19,6 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import UserNotifications
 import AWSMobileClient
-import Firebase
 import Fabric
 
 let userPoolID = "us-west-2_7BKdwAKgn"
@@ -33,13 +32,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let notificationCenter = UNUserNotificationCenter.current()
 
     class func defaultUserPool() -> AWSCognitoIdentityUserPool {
-        return AWSCognitoIdentityUserPool(forKey: userPoolID)
+        return AWSCognitoIdentityUserPool(forKey: userPoolID)!
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         NSLog("Twilio Voice Version: %@", TwilioVoice.sdkVersion())
-        FirebaseApp.configure()
         Fabric.sharedSDK().debug = true
         IQKeyboardManager.shared.enable = true
         self.launchApplicaton(userInfo: nil)

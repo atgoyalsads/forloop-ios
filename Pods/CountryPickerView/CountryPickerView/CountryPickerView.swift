@@ -1,5 +1,3 @@
-
-
 //
 //  CountryPickerView.swift
 //  CountryPickerView
@@ -125,14 +123,10 @@ public class CountryPickerView: NibView {
         let countryVc = CountryPickerViewController(style: .grouped)
         countryVc.countryPickerView = self
         if let viewController = viewController as? UINavigationController {
-//            viewController.modalPresentationStyle = .overCurrentContext
             viewController.present(UINavigationController(rootViewController: countryVc),
                                    animated: true)
-
             // viewController.pushViewController(countryVc, animated: true)
         } else {
-//            viewController.modalPresentationStyle = .overCurrentContext
-
             viewController.present(UINavigationController(rootViewController: countryVc),
                                    animated: true)
         }
@@ -254,3 +248,4 @@ extension CountryPickerView: CountryPickerViewDataSource {
     }
     
 }
+

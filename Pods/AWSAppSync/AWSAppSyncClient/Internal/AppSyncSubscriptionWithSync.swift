@@ -29,6 +29,8 @@ final class AppSyncSubscriptionWithSync<Subscription: GraphQLSubscription, BaseQ
 
     private var currentSyncAttempts = 0
 
+    private var isCancelled = false
+
     /// Serializes sync setup, query, and teardown operations to ensure a consistent ordering of invocations.
     private var internalStateSyncQueue: OperationQueue
 
@@ -101,12 +103,15 @@ final class AppSyncSubscriptionWithSync<Subscription: GraphQLSubscription, BaseQ
     // MARK: - Setup
 
     private func performInitialSync() {
+        guard !isCancelled else {
+            return
+        }
         AppSyncLog.debug("Queuing operations for initial sync")
-        internalStateSyncQueue.addOperation {
-            self.registerForNotifications()
-            self.initializeLastSyncTimeFromCache()
-            self.initializeBaseQueryResultsFromCache()
-            self.performSync()
+        internalStateSyncQueue.addOperation { [weak self] in
+            self?.registerForNotifications()
+            self?.initializeLastSyncTimeFromCache()
+            self?.initializeBaseQueryResultsFromCache()
+            self?.performSync()
         }
     }
 
@@ -402,6 +407,9 @@ final class AppSyncSubscriptionWithSync<Subscription: GraphQLSubscription, BaseQ
     ///   a delta or base query is the responsibility of `SyncStrategy`
     /// - See Also: SyncStrategy
     private func performSync() {
+        guard !isCancelled else {
+            return
+        }
         AppSyncLog.debug("Starting sync")
         subscriptionMessagesQueue.stopDelivery()
 
@@ -455,7 +463,8 @@ final class AppSyncSubscriptionWithSync<Subscription: GraphQLSubscription, BaseQ
             interval = syncStrategy.baseRefreshIntervalInSeconds.asDispatchTimeInterval
         } else {
             AppSyncLog.debug("Setting up retry timer")
-            let delayForCurrentAttempt = AWSAppSyncRetryHandler.retryDelayInMillseconds(for: currentSyncAttempts, retryStrategy: appSyncClient!.retryStrategy)
+            let retryStrategy = appSyncClient?.retryStrategy ?? .exponential
+            let delayForCurrentAttempt = AWSAppSyncRetryHandler.retryDelayInMillseconds(for: currentSyncAttempts, retryStrategy: retryStrategy)
             let delay = min(delayForCurrentAttempt, AWSAppSyncRetryHandler.maxWaitMilliseconds)
             interval = .milliseconds(delay)
         }
@@ -475,11 +484,11 @@ final class AppSyncSubscriptionWithSync<Subscription: GraphQLSubscription, BaseQ
             return
         }
 
-        nextSyncTimer = DispatchSource.makeOneOffDispatchSourceTimer(deadline: deadline, queue: handlerQueue) {
+        nextSyncTimer = DispatchSource.makeOneOffDispatchSourceTimer(deadline: deadline, queue: handlerQueue) { [weak self] in
             AppSyncLog.debug("Timer fired, queueing sync operation")
-            self.internalStateSyncQueue.addOperation {
+            self?.internalStateSyncQueue.addOperation {
                 AppSyncLog.debug("Perform sync queued by timer")
-                self.performSync()
+                self?.performSync()
             }
         }
 
@@ -506,7 +515,7 @@ final class AppSyncSubscriptionWithSync<Subscription: GraphQLSubscription, BaseQ
             baseString += type(of: deltaQuery).requestString + variables
         }
 
-        return AWSSignatureSignerUtility.hash(baseString.data(using: .utf8)!)!.base64EncodedString()
+        return AWSSignatureSignerUtility.hash(baseString.data(using: .utf8)!).base64EncodedString()
     }
     
     deinit {
@@ -519,6 +528,9 @@ final class AppSyncSubscriptionWithSync<Subscription: GraphQLSubscription, BaseQ
     /// Cancels and releases the subscription watcher, cancels active timers, and unregisters for system notifications. After
     /// invoking this method, the instance will be eligible for release.
     private func internalCancel() {
+        isCancelled = true
+        internalStateSyncQueue.cancelAllOperations()
+        internalStateSyncQueue.isSuspended = true
         unregisterForNotifications()
         nextSyncTimer?.cancel()
         subscriptionWatcher?.cancel()
@@ -554,9 +566,9 @@ final class AppSyncSubscriptionWithSync<Subscription: GraphQLSubscription, BaseQ
     @objc private func applicationWillEnterForeground() {
         // perform delta sync here
         // disconnect from sub and reconnect
-        self.internalStateSyncQueue.addOperation {
+        self.internalStateSyncQueue.addOperation { [weak self] in
             AppSyncLog.debug("App entered foreground, syncing")
-            self.performSync()
+            self?.performSync()
         }
     }
 
@@ -565,9 +577,9 @@ final class AppSyncSubscriptionWithSync<Subscription: GraphQLSubscription, BaseQ
         let connectionInfo = notification.object as! AppSyncConnectionInfo
 
         if connectionInfo.isConnectionAvailable {
-            self.internalStateSyncQueue.addOperation {
+            self.internalStateSyncQueue.addOperation { [weak self] in
                 AppSyncLog.debug("Network connectivity restored, syncing")
-                self.performSync()
+                self?.performSync()
             }
         }
     }

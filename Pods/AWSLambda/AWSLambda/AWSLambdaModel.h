@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -27,6 +27,10 @@ typedef NS_ENUM(NSInteger, AWSLambdaErrorType) {
     AWSLambdaErrorEC2AccessDenied,
     AWSLambdaErrorEC2Throttled,
     AWSLambdaErrorEC2Unexpected,
+    AWSLambdaErrorEFSIO,
+    AWSLambdaErrorEFSMountConnectivity,
+    AWSLambdaErrorEFSMountFailure,
+    AWSLambdaErrorEFSMountTimeout,
     AWSLambdaErrorENILimitReached,
     AWSLambdaErrorInvalidParameterValue,
     AWSLambdaErrorInvalidRequestContent,
@@ -84,6 +88,9 @@ typedef NS_ENUM(NSInteger, AWSLambdaLastUpdateStatusReasonCode) {
     AWSLambdaLastUpdateStatusReasonCodeInsufficientRolePermissions,
     AWSLambdaLastUpdateStatusReasonCodeInvalidConfiguration,
     AWSLambdaLastUpdateStatusReasonCodeInternalError,
+    AWSLambdaLastUpdateStatusReasonCodeSubnetOutOfIPAddresses,
+    AWSLambdaLastUpdateStatusReasonCodeInvalidSubnet,
+    AWSLambdaLastUpdateStatusReasonCodeInvalidSecurityGroup,
 };
 
 typedef NS_ENUM(NSInteger, AWSLambdaLogType) {
@@ -116,9 +123,11 @@ typedef NS_ENUM(NSInteger, AWSLambdaRuntime) {
     AWSLambdaRuntimeDotnetcore10,
     AWSLambdaRuntimeDotnetcore20,
     AWSLambdaRuntimeDotnetcore21,
+    AWSLambdaRuntimeDotnetcore31,
     AWSLambdaRuntimeNodejs43Edge,
     AWSLambdaRuntimeGo1X,
     AWSLambdaRuntimeRuby25,
+    AWSLambdaRuntimeRuby27,
     AWSLambdaRuntimeProvided,
 };
 
@@ -140,6 +149,8 @@ typedef NS_ENUM(NSInteger, AWSLambdaStateReasonCode) {
     AWSLambdaStateReasonCodeInvalidConfiguration,
     AWSLambdaStateReasonCodeInternalError,
     AWSLambdaStateReasonCodeSubnetOutOfIPAddresses,
+    AWSLambdaStateReasonCodeInvalidSubnet,
+    AWSLambdaStateReasonCodeInvalidSecurityGroup,
 };
 
 typedef NS_ENUM(NSInteger, AWSLambdaThrottleReason) {
@@ -182,6 +193,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @class AWSLambdaEnvironmentError;
 @class AWSLambdaEnvironmentResponse;
 @class AWSLambdaEventSourceMappingConfiguration;
+@class AWSLambdaFileSystemConfig;
 @class AWSLambdaFunctionCode;
 @class AWSLambdaFunctionCodeLocation;
 @class AWSLambdaFunctionConfiguration;
@@ -405,7 +417,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) NSString * _Nullable revisionId;
 
 /**
- <p>For AWS services, the ID of the account that owns the resource. Use this instead of <code>SourceArn</code> to grant permission to resources that are owned by another account (for example, all of an account's Amazon S3 buckets). Or use it together with <code>SourceArn</code> to ensure that the resource is owned by the specified account. For example, an Amazon S3 bucket could be deleted by its owner and recreated by another account.</p>
+ <p>For Amazon S3, the ID of the account that owns the resource. Use this together with <code>SourceArn</code> to ensure that the resource is owned by the specified account. It is possible for an Amazon S3 bucket to be deleted by its owner and recreated by another account.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable sourceAccount;
 
@@ -479,7 +491,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 
 
 /**
- <p>The name of the second alias, and the percentage of traffic that's routed to it.</p>
+ <p>The second version, and the percentage of traffic that's routed to it.</p>
  */
 @property (nonatomic, strong) NSDictionary<NSString *, NSNumber *> * _Nullable additionalVersionWeights;
 
@@ -525,7 +537,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) NSString * _Nullable name;
 
 /**
- <p>The <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-traffic-shifting-using-aliases.html">routing configuration</a> of the alias.</p>
+ <p>The <a href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html#configuring-alias-routing">routing configuration</a> of the alias.</p>
  */
 @property (nonatomic, strong) AWSLambdaAliasRoutingConfiguration * _Nullable routingConfig;
 
@@ -568,7 +580,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) NSString * _Nullable functionName;
 
 /**
- <p>The maximum amount of time to gather records before invoking the function, in seconds.</p>
+ <p>(Streams) The maximum amount of time to gather records before invoking the function, in seconds.</p>
  */
 @property (nonatomic, strong) NSNumber * _Nullable maximumBatchingWindowInSeconds;
 
@@ -624,6 +636,11 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
  <p>Environment variables that are accessible from function code during execution.</p>
  */
 @property (nonatomic, strong) AWSLambdaEnvironment * _Nullable environment;
+
+/**
+ <p>Connection settings for an Amazon EFS file system.</p>
+ */
+@property (nonatomic, strong) NSArray<AWSLambdaFileSystemConfig *> * _Nullable fileSystemConfigs;
 
 /**
  <p>The name of the Lambda function.</p><p class="title"><b>Name formats</b></p><ul><li><p><b>Function name</b> - <code>my-function</code>.</p></li><li><p><b>Function ARN</b> - <code>arn:aws:lambda:us-west-2:123456789012:function:my-function</code>.</p></li><li><p><b>Partial ARN</b> - <code>123456789012:function:my-function</code>.</p></li></ul><p>The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.</p>
@@ -925,7 +942,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) NSString * _Nullable lastProcessingResult;
 
 /**
- <p>The maximum amount of time to gather records before invoking the function, in seconds.</p>
+ <p>(Streams) The maximum amount of time to gather records before invoking the function, in seconds.</p>
  */
 @property (nonatomic, strong) NSNumber * _Nullable maximumBatchingWindowInSeconds;
 
@@ -958,6 +975,25 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
  <p>The identifier of the event source mapping.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable UUID;
+
+@end
+
+/**
+ <p>Details about the connection between a Lambda function and an Amazon EFS file system.</p>
+ Required parameters: [Arn, LocalMountPath]
+ */
+@interface AWSLambdaFileSystemConfig : AWSModel
+
+
+/**
+ <p>The Amazon Resource Name (ARN) of the Amazon EFS access point that provides access to the file system.</p>
+ */
+@property (nonatomic, strong) NSString * _Nullable arn;
+
+/**
+ <p>The path where the function can access the file system, starting with <code>/mnt/</code>.</p>
+ */
+@property (nonatomic, strong) NSString * _Nullable localMountPath;
 
 @end
 
@@ -1039,6 +1075,11 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) AWSLambdaEnvironmentResponse * _Nullable environment;
 
 /**
+ <p>Connection settings for an Amazon EFS file system.</p>
+ */
+@property (nonatomic, strong) NSArray<AWSLambdaFileSystemConfig *> * _Nullable fileSystemConfigs;
+
+/**
  <p>The function's Amazon Resource Name (ARN).</p>
  */
 @property (nonatomic, strong) NSString * _Nullable functionArn;
@@ -1064,7 +1105,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) NSString * _Nullable lastModified;
 
 /**
- <p>The status of the last update that was performed on the function.</p>
+ <p>The status of the last update that was performed on the function. This is first set to <code>Successful</code> after function creation completes.</p>
  */
 @property (nonatomic, assign) AWSLambdaLastUpdateStatus lastUpdateStatus;
 
@@ -1124,7 +1165,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, assign) AWSLambdaStateReasonCode stateReasonCode;
 
 /**
- <p>The amount of time that Lambda allows a function to run before stopping it.</p>
+ <p>The amount of time in seconds that Lambda allows a function to run before stopping it.</p>
  */
 @property (nonatomic, strong) NSNumber * _Nullable timeout;
 
@@ -1600,7 +1641,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) NSString * _Nullable executedVersion;
 
 /**
- <p>If present, indicates that an error occurred during function execution. Details about the error are included in the response payload.</p><ul><li><p><code>Handled</code> - The runtime caught an error thrown by the function and formatted it into a JSON document.</p></li><li><p><code>Unhandled</code> - The runtime didn't handle the error. For example, the function ran out of memory or timed out.</p></li></ul>
+ <p>If present, indicates that an error occurred during function execution. Details about the error are included in the response payload.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable functionError;
 
@@ -1932,12 +1973,12 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) NSString * _Nullable marker;
 
 /**
- <p>For Lambda@Edge functions, the AWS Region of the master function. For example, <code>us-east-2</code> or <code>ALL</code>. If specified, you must set <code>FunctionVersion</code> to <code>ALL</code>.</p>
+ <p>For Lambda@Edge functions, the AWS Region of the master function. For example, <code>us-east-1</code> filters the list of functions to only include Lambda@Edge functions replicated from a master function in US East (N. Virginia). If specified, you must set <code>FunctionVersion</code> to <code>ALL</code>.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable masterRegion;
 
 /**
- <p>Specify a value between 1 and 50 to limit the number of functions in the response.</p>
+ <p>The maximum number of functions to return.</p>
  */
 @property (nonatomic, strong) NSNumber * _Nullable maxItems;
 
@@ -2132,7 +2173,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) NSString * _Nullable marker;
 
 /**
- <p>Limit the number of versions that are returned.</p>
+ <p>The maximum number of versions to return.</p>
  */
 @property (nonatomic, strong) NSNumber * _Nullable maxItems;
 
@@ -2521,7 +2562,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @end
 
 /**
- <p>The function's AWS X-Ray tracing configuration.</p>
+ <p>The function's AWS X-Ray tracing configuration. To sample and record incoming requests, set <code>Mode</code> to <code>Active</code>.</p>
  */
 @interface AWSLambdaTracingConfig : AWSModel
 
@@ -2596,7 +2637,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) NSString * _Nullable revisionId;
 
 /**
- <p>The <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-traffic-shifting-using-aliases.html">routing configuration</a> of the alias.</p>
+ <p>The <a href="https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html#configuring-alias-routing">routing configuration</a> of the alias.</p>
  */
 @property (nonatomic, strong) AWSLambdaAliasRoutingConfiguration * _Nullable routingConfig;
 
@@ -2634,7 +2675,7 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
 @property (nonatomic, strong) NSString * _Nullable functionName;
 
 /**
- <p>The maximum amount of time to gather records before invoking the function, in seconds.</p>
+ <p>(Streams) The maximum amount of time to gather records before invoking the function, in seconds.</p>
  */
 @property (nonatomic, strong) NSNumber * _Nullable maximumBatchingWindowInSeconds;
 
@@ -2728,6 +2769,11 @@ typedef NS_ENUM(NSInteger, AWSLambdaTracingMode) {
  <p>Environment variables that are accessible from function code during execution.</p>
  */
 @property (nonatomic, strong) AWSLambdaEnvironment * _Nullable environment;
+
+/**
+ <p>Connection settings for an Amazon EFS file system.</p>
+ */
+@property (nonatomic, strong) NSArray<AWSLambdaFileSystemConfig *> * _Nullable fileSystemConfigs;
 
 /**
  <p>The name of the Lambda function.</p><p class="title"><b>Name formats</b></p><ul><li><p><b>Function name</b> - <code>my-function</code>.</p></li><li><p><b>Function ARN</b> - <code>arn:aws:lambda:us-west-2:123456789012:function:my-function</code>.</p></li><li><p><b>Partial ARN</b> - <code>123456789012:function:my-function</code>.</p></li></ul><p>The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.</p>

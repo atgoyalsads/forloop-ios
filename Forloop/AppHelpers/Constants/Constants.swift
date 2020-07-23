@@ -12,7 +12,7 @@ import UIKit
 //to set the environment
 let isDebugEnabled = true
 //to set logs
-let isLogEnabled = false
+let isLogEnabled = true
 
 let Rs = "$ "
 

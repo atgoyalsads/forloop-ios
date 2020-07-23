@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -222,6 +222,7 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
              @"deadLetterConfig" : @"DeadLetterConfig",
              @"detail" : @"Description",
              @"environment" : @"Environment",
+             @"fileSystemConfigs" : @"FileSystemConfigs",
              @"functionName" : @"FunctionName",
              @"handler" : @"Handler",
              @"KMSKeyArn" : @"KMSKeyArn",
@@ -247,6 +248,10 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
 
 + (NSValueTransformer *)environmentJSONTransformer {
     return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSLambdaEnvironment class]];
+}
+
++ (NSValueTransformer *)fileSystemConfigsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSLambdaFileSystemConfig class]];
 }
 
 + (NSValueTransformer *)runtimeJSONTransformer {
@@ -296,6 +301,9 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         if ([value caseInsensitiveCompare:@"dotnetcore2.1"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeDotnetcore21);
         }
+        if ([value caseInsensitiveCompare:@"dotnetcore3.1"] == NSOrderedSame) {
+            return @(AWSLambdaRuntimeDotnetcore31);
+        }
         if ([value caseInsensitiveCompare:@"nodejs4.3-edge"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeNodejs43Edge);
         }
@@ -304,6 +312,9 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         }
         if ([value caseInsensitiveCompare:@"ruby2.5"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeRuby25);
+        }
+        if ([value caseInsensitiveCompare:@"ruby2.7"] == NSOrderedSame) {
+            return @(AWSLambdaRuntimeRuby27);
         }
         if ([value caseInsensitiveCompare:@"provided"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeProvided);
@@ -341,12 +352,16 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
                 return @"dotnetcore2.0";
             case AWSLambdaRuntimeDotnetcore21:
                 return @"dotnetcore2.1";
+            case AWSLambdaRuntimeDotnetcore31:
+                return @"dotnetcore3.1";
             case AWSLambdaRuntimeNodejs43Edge:
                 return @"nodejs4.3-edge";
             case AWSLambdaRuntimeGo1X:
                 return @"go1.x";
             case AWSLambdaRuntimeRuby25:
                 return @"ruby2.5";
+            case AWSLambdaRuntimeRuby27:
+                return @"ruby2.7";
             case AWSLambdaRuntimeProvided:
                 return @"provided";
             default:
@@ -540,6 +555,17 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
 
 @end
 
+@implementation AWSLambdaFileSystemConfig
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"arn" : @"Arn",
+             @"localMountPath" : @"LocalMountPath",
+             };
+}
+
+@end
+
 @implementation AWSLambdaFunctionCode
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -573,6 +599,7 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
              @"deadLetterConfig" : @"DeadLetterConfig",
              @"detail" : @"Description",
              @"environment" : @"Environment",
+             @"fileSystemConfigs" : @"FileSystemConfigs",
              @"functionArn" : @"FunctionArn",
              @"functionName" : @"FunctionName",
              @"handler" : @"Handler",
@@ -603,6 +630,10 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
 
 + (NSValueTransformer *)environmentJSONTransformer {
     return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSLambdaEnvironmentResponse class]];
+}
+
++ (NSValueTransformer *)fileSystemConfigsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSLambdaFileSystemConfig class]];
 }
 
 + (NSValueTransformer *)lastUpdateStatusJSONTransformer {
@@ -645,6 +676,15 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         if ([value caseInsensitiveCompare:@"InternalError"] == NSOrderedSame) {
             return @(AWSLambdaLastUpdateStatusReasonCodeInternalError);
         }
+        if ([value caseInsensitiveCompare:@"SubnetOutOfIPAddresses"] == NSOrderedSame) {
+            return @(AWSLambdaLastUpdateStatusReasonCodeSubnetOutOfIPAddresses);
+        }
+        if ([value caseInsensitiveCompare:@"InvalidSubnet"] == NSOrderedSame) {
+            return @(AWSLambdaLastUpdateStatusReasonCodeInvalidSubnet);
+        }
+        if ([value caseInsensitiveCompare:@"InvalidSecurityGroup"] == NSOrderedSame) {
+            return @(AWSLambdaLastUpdateStatusReasonCodeInvalidSecurityGroup);
+        }
         return @(AWSLambdaLastUpdateStatusReasonCodeUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -656,6 +696,12 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
                 return @"InvalidConfiguration";
             case AWSLambdaLastUpdateStatusReasonCodeInternalError:
                 return @"InternalError";
+            case AWSLambdaLastUpdateStatusReasonCodeSubnetOutOfIPAddresses:
+                return @"SubnetOutOfIPAddresses";
+            case AWSLambdaLastUpdateStatusReasonCodeInvalidSubnet:
+                return @"InvalidSubnet";
+            case AWSLambdaLastUpdateStatusReasonCodeInvalidSecurityGroup:
+                return @"InvalidSecurityGroup";
             default:
                 return nil;
         }
@@ -713,6 +759,9 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         if ([value caseInsensitiveCompare:@"dotnetcore2.1"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeDotnetcore21);
         }
+        if ([value caseInsensitiveCompare:@"dotnetcore3.1"] == NSOrderedSame) {
+            return @(AWSLambdaRuntimeDotnetcore31);
+        }
         if ([value caseInsensitiveCompare:@"nodejs4.3-edge"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeNodejs43Edge);
         }
@@ -721,6 +770,9 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         }
         if ([value caseInsensitiveCompare:@"ruby2.5"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeRuby25);
+        }
+        if ([value caseInsensitiveCompare:@"ruby2.7"] == NSOrderedSame) {
+            return @(AWSLambdaRuntimeRuby27);
         }
         if ([value caseInsensitiveCompare:@"provided"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeProvided);
@@ -758,12 +810,16 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
                 return @"dotnetcore2.0";
             case AWSLambdaRuntimeDotnetcore21:
                 return @"dotnetcore2.1";
+            case AWSLambdaRuntimeDotnetcore31:
+                return @"dotnetcore3.1";
             case AWSLambdaRuntimeNodejs43Edge:
                 return @"nodejs4.3-edge";
             case AWSLambdaRuntimeGo1X:
                 return @"go1.x";
             case AWSLambdaRuntimeRuby25:
                 return @"ruby2.5";
+            case AWSLambdaRuntimeRuby27:
+                return @"ruby2.7";
             case AWSLambdaRuntimeProvided:
                 return @"provided";
             default:
@@ -829,6 +885,12 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         if ([value caseInsensitiveCompare:@"SubnetOutOfIPAddresses"] == NSOrderedSame) {
             return @(AWSLambdaStateReasonCodeSubnetOutOfIPAddresses);
         }
+        if ([value caseInsensitiveCompare:@"InvalidSubnet"] == NSOrderedSame) {
+            return @(AWSLambdaStateReasonCodeInvalidSubnet);
+        }
+        if ([value caseInsensitiveCompare:@"InvalidSecurityGroup"] == NSOrderedSame) {
+            return @(AWSLambdaStateReasonCodeInvalidSecurityGroup);
+        }
         return @(AWSLambdaStateReasonCodeUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -848,6 +910,10 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
                 return @"InternalError";
             case AWSLambdaStateReasonCodeSubnetOutOfIPAddresses:
                 return @"SubnetOutOfIPAddresses";
+            case AWSLambdaStateReasonCodeInvalidSubnet:
+                return @"InvalidSubnet";
+            case AWSLambdaStateReasonCodeInvalidSecurityGroup:
+                return @"InvalidSecurityGroup";
             default:
                 return nil;
         }
@@ -1499,6 +1565,9 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         if ([value caseInsensitiveCompare:@"dotnetcore2.1"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeDotnetcore21);
         }
+        if ([value caseInsensitiveCompare:@"dotnetcore3.1"] == NSOrderedSame) {
+            return @(AWSLambdaRuntimeDotnetcore31);
+        }
         if ([value caseInsensitiveCompare:@"nodejs4.3-edge"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeNodejs43Edge);
         }
@@ -1507,6 +1576,9 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         }
         if ([value caseInsensitiveCompare:@"ruby2.5"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeRuby25);
+        }
+        if ([value caseInsensitiveCompare:@"ruby2.7"] == NSOrderedSame) {
+            return @(AWSLambdaRuntimeRuby27);
         }
         if ([value caseInsensitiveCompare:@"provided"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeProvided);
@@ -1544,12 +1616,16 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
                 return @"dotnetcore2.0";
             case AWSLambdaRuntimeDotnetcore21:
                 return @"dotnetcore2.1";
+            case AWSLambdaRuntimeDotnetcore31:
+                return @"dotnetcore3.1";
             case AWSLambdaRuntimeNodejs43Edge:
                 return @"nodejs4.3-edge";
             case AWSLambdaRuntimeGo1X:
                 return @"go1.x";
             case AWSLambdaRuntimeRuby25:
                 return @"ruby2.5";
+            case AWSLambdaRuntimeRuby27:
+                return @"ruby2.7";
             case AWSLambdaRuntimeProvided:
                 return @"provided";
             default:
@@ -1632,6 +1708,9 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         if ([value caseInsensitiveCompare:@"dotnetcore2.1"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeDotnetcore21);
         }
+        if ([value caseInsensitiveCompare:@"dotnetcore3.1"] == NSOrderedSame) {
+            return @(AWSLambdaRuntimeDotnetcore31);
+        }
         if ([value caseInsensitiveCompare:@"nodejs4.3-edge"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeNodejs43Edge);
         }
@@ -1640,6 +1719,9 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         }
         if ([value caseInsensitiveCompare:@"ruby2.5"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeRuby25);
+        }
+        if ([value caseInsensitiveCompare:@"ruby2.7"] == NSOrderedSame) {
+            return @(AWSLambdaRuntimeRuby27);
         }
         if ([value caseInsensitiveCompare:@"provided"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeProvided);
@@ -1677,12 +1759,16 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
                 return @"dotnetcore2.0";
             case AWSLambdaRuntimeDotnetcore21:
                 return @"dotnetcore2.1";
+            case AWSLambdaRuntimeDotnetcore31:
+                return @"dotnetcore3.1";
             case AWSLambdaRuntimeNodejs43Edge:
                 return @"nodejs4.3-edge";
             case AWSLambdaRuntimeGo1X:
                 return @"go1.x";
             case AWSLambdaRuntimeRuby25:
                 return @"ruby2.5";
+            case AWSLambdaRuntimeRuby27:
+                return @"ruby2.7";
             case AWSLambdaRuntimeProvided:
                 return @"provided";
             default:
@@ -2154,6 +2240,7 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
              @"deadLetterConfig" : @"DeadLetterConfig",
              @"detail" : @"Description",
              @"environment" : @"Environment",
+             @"fileSystemConfigs" : @"FileSystemConfigs",
              @"functionName" : @"FunctionName",
              @"handler" : @"Handler",
              @"KMSKeyArn" : @"KMSKeyArn",
@@ -2174,6 +2261,10 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
 
 + (NSValueTransformer *)environmentJSONTransformer {
     return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSLambdaEnvironment class]];
+}
+
++ (NSValueTransformer *)fileSystemConfigsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSLambdaFileSystemConfig class]];
 }
 
 + (NSValueTransformer *)runtimeJSONTransformer {
@@ -2223,6 +2314,9 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         if ([value caseInsensitiveCompare:@"dotnetcore2.1"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeDotnetcore21);
         }
+        if ([value caseInsensitiveCompare:@"dotnetcore3.1"] == NSOrderedSame) {
+            return @(AWSLambdaRuntimeDotnetcore31);
+        }
         if ([value caseInsensitiveCompare:@"nodejs4.3-edge"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeNodejs43Edge);
         }
@@ -2231,6 +2325,9 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
         }
         if ([value caseInsensitiveCompare:@"ruby2.5"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeRuby25);
+        }
+        if ([value caseInsensitiveCompare:@"ruby2.7"] == NSOrderedSame) {
+            return @(AWSLambdaRuntimeRuby27);
         }
         if ([value caseInsensitiveCompare:@"provided"] == NSOrderedSame) {
             return @(AWSLambdaRuntimeProvided);
@@ -2268,12 +2365,16 @@ NSString *const AWSLambdaErrorDomain = @"com.amazonaws.AWSLambdaErrorDomain";
                 return @"dotnetcore2.0";
             case AWSLambdaRuntimeDotnetcore21:
                 return @"dotnetcore2.1";
+            case AWSLambdaRuntimeDotnetcore31:
+                return @"dotnetcore3.1";
             case AWSLambdaRuntimeNodejs43Edge:
                 return @"nodejs4.3-edge";
             case AWSLambdaRuntimeGo1X:
                 return @"go1.x";
             case AWSLambdaRuntimeRuby25:
                 return @"ruby2.5";
+            case AWSLambdaRuntimeRuby27:
+                return @"ruby2.7";
             case AWSLambdaRuntimeProvided:
                 return @"provided";
             default:

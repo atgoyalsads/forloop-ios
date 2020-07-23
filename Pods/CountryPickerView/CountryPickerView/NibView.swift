@@ -1,4 +1,3 @@
-
 //
 //  NibView.swift
 //  CountryPickerView
@@ -40,5 +39,4 @@ public class NibView: UIView {
     }
     
 }
-
 

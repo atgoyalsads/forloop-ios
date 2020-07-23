@@ -80,7 +80,7 @@ public class TagsView: UIView {
     private var _height: CGFloat = 0
     public var height: CGFloat {
         get {
-            return 20//self._height
+            return self._height
         }
     }
     

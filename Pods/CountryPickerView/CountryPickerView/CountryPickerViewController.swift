@@ -1,4 +1,3 @@
-
 //
 //  CountryPickerViewController.swift
 //  CountryPickerView
@@ -236,7 +235,6 @@ extension CountryPickerViewController: UISearchBarDelegate {
     }
     
 }
-
 
 
 

@@ -61,36 +61,14 @@ static NSString *const AWSPinpointContextKeychainUniqueIdKey = @"com.amazonaws.A
     dispatch_once(&onceToken, ^{
         AWSServiceConfiguration *serviceConfiguration = nil;
         AWSServiceInfo *serviceInfo = [[AWSInfo defaultAWSInfo] defaultServiceInfo:AWSInfoCognitoUserPool];
-        
+
         if (serviceInfo) {
             serviceConfiguration = [[AWSServiceConfiguration alloc] initWithRegion:serviceInfo.region
                                                                credentialsProvider:nil];
         }
-        
-        NSString *poolId = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolId] ?: [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolIdLegacy];
-        NSString *clientId = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientId] ?: [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientIdLegacy];
-        NSString *clientSecret = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientSecret] ?: [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientSecretLegacy];
-        NSString *pinpointAppId = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolPinpointAppId];
-        NSNumber *migrationEnabled = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolMigrationEnabled];
-        BOOL migrationEnabledBoolean = NO;
-        if (migrationEnabled != nil) {
-            migrationEnabledBoolean = [migrationEnabled boolValue];
-        }
-
-        if (poolId && clientId) {
-            AWSCognitoIdentityUserPoolConfiguration *configuration = [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:clientId
-                                                                                                                          clientSecret:clientSecret
-                                                                                                                                poolId:poolId
-                                                                                                    shouldProvideCognitoValidationData:YES
-                                                                                                                         pinpointAppId:pinpointAppId
-                                                                    migrationEnabled:migrationEnabledBoolean ];
-            _defaultUserPool = [[AWSCognitoIdentityUserPool alloc] initWithConfiguration:serviceConfiguration
-                                                                   userPoolConfiguration:configuration];
-        } else {
-            @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                           reason:@"The service configuration is `nil`. You need to configure `Info.plist` before using this method."
-                                         userInfo:nil];
-        }
+        AWSCognitoIdentityUserPoolConfiguration *configuration = [AWSCognitoIdentityUserPool buildUserPoolConfiguration: serviceInfo];
+        _defaultUserPool = [[AWSCognitoIdentityUserPool alloc] initWithConfiguration:serviceConfiguration
+                                                               userPoolConfiguration:configuration];
     });
     
     return _defaultUserPool;
@@ -135,6 +113,32 @@ static NSString *const AWSPinpointContextKeychainUniqueIdKey = @"com.amazonaws.A
                                    reason:@"`- init` is not a valid initializer. Use `+ defaultCognitoIdentityProvider` or `+ CognitoIdentityProviderForKey:` instead."
                                  userInfo:nil];
     return nil;
+}
+
++ (AWSCognitoIdentityUserPoolConfiguration *)buildUserPoolConfiguration:(AWSServiceInfo *) serviceInfo {
+    NSString *poolId = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolId] ?: [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolIdLegacy];
+    NSString *clientId = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientId] ?: [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientIdLegacy];
+    NSString *clientSecret = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientSecret] ?: [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolAppClientSecretLegacy];
+    NSString *pinpointAppId = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolPinpointAppId];
+    NSNumber *migrationEnabled = [serviceInfo.infoDictionary objectForKey:AWSCognitoUserPoolMigrationEnabled];
+    BOOL migrationEnabledBoolean = NO;
+    if (migrationEnabled != nil) {
+        migrationEnabledBoolean = [migrationEnabled boolValue];
+    }
+
+    if (poolId && clientId) {
+        return [[AWSCognitoIdentityUserPoolConfiguration alloc] initWithClientId:clientId
+                                                                    clientSecret:clientSecret
+                                                                          poolId:poolId
+                                              shouldProvideCognitoValidationData:YES
+                                                                   pinpointAppId:pinpointAppId
+                                                                migrationEnabled:migrationEnabledBoolean ];
+
+    } else {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                       reason:@"The service configuration is `nil`. You need to configure `Info.plist` before using this method."
+                                     userInfo:nil];
+    }
 }
 
 // Internal init method
@@ -183,10 +187,12 @@ static NSString *const AWSPinpointContextKeychainUniqueIdKey = @"com.amazonaws.A
     _delegate = nil;
 }
 
+
 - (AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *>*) signUp: (NSString*) username
                                      password: (NSString*) password
                                userAttributes: (NSArray<AWSCognitoIdentityUserAttributeType *> *) userAttributes
-                               validationData: (NSArray<AWSCognitoIdentityUserAttributeType *> *) validationData {
+                               validationData: (NSArray<AWSCognitoIdentityUserAttributeType *> *) validationData
+                               clientMetaData:(nullable NSDictionary<NSString *,NSString *> *)clientMetaData {
     AWSCognitoIdentityProviderSignUpRequest* request = [AWSCognitoIdentityProviderSignUpRequest new];
     request.clientId = self.userPoolConfiguration.clientId;
     request.username = username;
@@ -197,6 +203,7 @@ static NSString *const AWSPinpointContextKeychainUniqueIdKey = @"com.amazonaws.A
     request.analyticsMetadata = [self analyticsMetadata];
     AWSCognitoIdentityUser *contextUser = [[AWSCognitoIdentityUser alloc] initWithUsername:username pool:self];
     request.userContextData = [self userContextData:username deviceId:[contextUser asfDeviceId]];
+    request.clientMetadata = clientMetaData;
     
     return [[self.client signUp:request] continueWithSuccessBlock:^id _Nullable(AWSTask<AWSCognitoIdentityProviderSignUpResponse *> * _Nonnull task) {
         AWSCognitoIdentityUser * user = [[AWSCognitoIdentityUser alloc] initWithUsername:username pool:self];
@@ -211,6 +218,14 @@ static NSString *const AWSPinpointContextKeychainUniqueIdKey = @"com.amazonaws.A
         return [AWSTask taskWithResult:signupResponse];
     }];
 }
+
+- (AWSTask<AWSCognitoIdentityUserPoolSignUpResponse *>*) signUp: (NSString*) username
+                                     password: (NSString*) password
+                               userAttributes: (NSArray<AWSCognitoIdentityUserAttributeType *> *) userAttributes
+                               validationData: (NSArray<AWSCognitoIdentityUserAttributeType *> *) validationData {
+    return [self signUp:username password:password userAttributes:userAttributes validationData:validationData clientMetaData:nil];
+}
+
 
 - (AWSCognitoIdentityUser*) currentUser {
     return [[AWSCognitoIdentityUser alloc] initWithUsername:[self currentUsername] pool: self];

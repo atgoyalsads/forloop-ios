@@ -29,7 +29,7 @@ protocol UserPoolAuthHelperlCallbacks {
     
     func didCompleteNewPasswordStepWithError(_ error: Error?)
     
-    func getCustomAuthenticationDetails(_ customAuthentiationInput: AWSCognitoIdentityCustomAuthenticationInput, customAuthCompletionSource: AWSTaskCompletionSource<AWSCognitoIdentityCustomChallengeDetails>)
+    func getCustomAuthenticationDetails(_ customAuthenticationInput: AWSCognitoIdentityCustomAuthenticationInput, customAuthCompletionSource: AWSTaskCompletionSource<AWSCognitoIdentityCustomChallengeDetails>)
     
     func didCompleteCustomAuthenticationStepWithError(_ error: Error?)
     
@@ -63,13 +63,42 @@ AWSCognitoUserPoolInternalDelegate {
     var authHelperDelegate: UserPoolAuthHelperlCallbacks?
     var customAuthHandler: AWSUserPoolCustomAuthHandler?
     internal static let sharedInstance: UserPoolOperationsHandler = UserPoolOperationsHandler()
+
+    static var serviceConfiguration: CognitoServiceConfiguration? = nil
+
     
     public override init() {
         super.init()
         if (AWSInfo.default().defaultServiceInfo("CognitoUserPool") != nil) {
-            self.userpoolClient = AWSCognitoIdentityUserPool.default()
+            self.userpoolClient = self.getUserPoolClient()
             self.userpoolClient?.delegate = self
         }
+    }
+
+    private func getUserPoolClient() -> AWSCognitoIdentityUserPool {
+        
+        guard let serviceConfig = UserPoolOperationsHandler.serviceConfiguration?.userPoolServiceConfiguration else {
+            return AWSCognitoIdentityUserPool.default()
+        }
+
+        // Check if a AWSCognitoIdentityUserPool is already registered with the given key.
+        let clientKey = "CognitoUserPoolKey"
+        if let client = AWSCognitoIdentityUserPool.init(forKey: clientKey) {
+            return client
+        }
+
+        // If the AWSCognitoIdentityUserPool is not registered, register it and then return the same object.
+        let serviceInfo = AWSInfo.default().defaultServiceInfo("CognitoUserPool")
+        let userPoolConfig = AWSCognitoIdentityUserPool.buildConfiguration(serviceInfo)
+        AWSCognitoIdentityUserPool.register(with: serviceConfig,
+                                            userPoolConfiguration: userPoolConfig,
+                                            forKey: clientKey)
+        if let client =  AWSCognitoIdentityUserPool.init(forKey: clientKey) {
+            return client
+        }
+
+        /// Fall back to the default client if the client was not registered correctly.
+        return AWSCognitoIdentityUserPool.default()
     }
     
     internal func startPasswordAuthentication() -> AWSCognitoIdentityPasswordAuthentication {

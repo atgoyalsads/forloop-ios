@@ -12,15 +12,15 @@ target 'Forloop' do
   pod 'SwiftyJSON', '~> 4.0'
    pod 'Fabric', '~> 1.7.5'
    pod 'Crashlytics', '~> 3.10'
-  pod 'Alamofire'
-  pod 'Firebase/Analytics'
+  pod 'Alamofire', '~> 4.7'
+#  pod 'Firebase/Analytics'
 
   pod 'IQKeyboardManagerSwift'
   pod 'CountryPickerView'
   pod 'RSKPlaceholderTextView'
   pod 'MGSwipeTableCell'
   pod 'SDWebImage'
-  pod 'MaterialTextField', '~> 1.0'
+#  pod 'MaterialTextField', '~> 1.0'
 
   pod 'Tags'
   pod 'Charts'
@@ -70,3 +70,4 @@ target 'Forloop' do
   end
 
 end
+
